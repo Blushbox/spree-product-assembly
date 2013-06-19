@@ -1,11 +1,11 @@
 <table class="index">
   <thead>
   	<tr>
-  		<th><%= t("name") %></th>
-  	  <th><%= t("sku") %></th>	
-  		<th><%= t("assembly_options") %></th>
-  		<th><%= t("options") %></th>
-  		<th><%= t("qty") %></th>
+  		<th><%= Spree.t(:name) %></th>
+  	  <th><%= Spree.t(:sku) %></th>
+  	  <th><%= Spree.t(:assembly_options) %></th>
+  		<th><%= Spree.t(:options) %></th>
+  		<th><%= Spree.t(:qty) %></th>
   		<th></th>
   	</tr>
   </thead>
@@ -21,11 +21,11 @@
 	        <td><%= text_field_tag :count, assembly.count_of(part) %></td>
 	  	    <td class="actions">
 	          <%= image_tag "spinner.gif", :style => "display:none", :class => "spinner" %>
-	          <%= link_to(icon('edit') + ' ' + t('update'),
+	          <%= link_to(icon('edit') + ' ' + Spree.t(:update),
 	                      set_count_admin_product_assembly_part_url(@product, assembly, part),
 	                      :class => "set_count_admin_product_part_link") %>
 
-	          <%= link_to(icon('delete') + ' ' + t('remove'), 
+	          <%= link_to(icon('delete') + ' ' + Spree.t(:remove), 
 	                      remove_admin_product_assembly_part_url(@product, assembly, part),
 	                      :class => "remove_admin_product_part_link") %>             
 	  	    </td>        
@@ -34,7 +34,7 @@
 			end
  		-%>
     <% if assemblies.empty? %>
-     <tr><td colspan="5"><%= t('none') %>.</td></tr>
+     <tr><td colspan="5"><%= Spree.t(:none) %>.</td></tr>
     <% end %>
   </tbody>
 </table>
