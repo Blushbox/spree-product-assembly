@@ -2,7 +2,7 @@
 
 <%= render :partial => 'spree/admin/shared/product_tabs', :locals => {:current => "Parts"} %>
 <div id="product_parts">
-  <%= render :partial => "parts_table", :locals => {:parts => @parts} %>
+  <%= render :partial => "parts_table", :locals => {:assemblies => @assemblies} %>
 </div>
 
 <%= form_tag('#') do %>

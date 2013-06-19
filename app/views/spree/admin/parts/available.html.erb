@@ -5,12 +5,12 @@
     else row.style.display = '';
   }
 </script>
-
 <h4><%= t('available_parts') %></h4>
 <table class="index">
 	<thead>
 		<tr>
   		<th><%= t("name") %></th>
+  		<th><%= t("assembly_options") %></th>
   		<th><%= t("options") %></th>
   		<th><%= t("qty") %></th>
   		<th></th>
@@ -22,6 +22,15 @@
         
         <td><%= product.name %></td>
         <td>
+          <% if @product.has_variants? %>
+            <%= select_tag "part[assembly_id]", 
+                options_for_select(@product.variants.map { |v| [variant_options(v), v.id] }) %>
+          <% else %>
+            <%= hidden_field_tag "part[assembly_id]", @product.master.id %>
+            <%= t :no_variants %>
+          <% end %>
+        </td>
+        <td>
           <% if product.has_variants? %>
             <%= select_tag "part[id]", 
                 options_for_select(product.variants.map { |v| [variant_options(v), v.id] }) %>
@@ -30,6 +39,7 @@
             <%= t :no_variants %>
           <% end %>
         </td>
+
         <td><%= text_field_tag "part[count]", 1 %></td>
 		    <td class="actions">
           <%= image_tag "spinner.gif", :style => "display:none", :class => "spinner" %>
@@ -47,10 +57,13 @@
 
 <%= javascript_tag do %>
   $("a.add_product_part_link").click(function(){
-    part_id_val = $('select option:selected', $(this).parent().parent()).val() ||
-                  $('input:first', $(this).parent().parent()).val();
-    params = { part_count :  $('input:last', $(this).parent().parent()).val(),
-               part_id : part_id_val};
+		part_id_val = $('select[name="part[id]"] option:selected', $(this).parent().parent()).val() ||
+		              $('input[name="part[id]"]', $(this).parent().parent()).val();
+		assembly_id_val =  $('select[name="part[assembly_id]"] option:selected', $(this).parent().parent()).val() ||
+		                            $('input[name="part[assembly_id]"]', $(this).parent().parent()).val();
+		params = { part_count :  $('input:last', $(this).parent().parent()).val(),
+		           id : part_id_val,
+							 assembly_id : assembly_id_val};
     return make_post_request($(this), params);
   });  
 <% end %>  
