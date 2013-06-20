@@ -15,10 +15,8 @@ module Spree
       end
 
       def check_assembly_stock_levels(variant, quantity)
-        product = variant.product
-
-        if product.assembly?
-          product.parts.all? do |part|
+        if variant.assembly?
+          variant.parts.all? do |part|
             Stock::Quantifier.new(part).can_supply? quantity
           end
         else

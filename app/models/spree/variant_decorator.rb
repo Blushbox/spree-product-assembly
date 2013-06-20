@@ -47,4 +47,9 @@ Spree::Variant.class_eval do
    ap = Spree::AssembliesPart.get(self.id, variant.id)
    ap ? ap.count : 0
   end
+  
+  def assembly?
+    parts.present?
+  end
+  
 end
