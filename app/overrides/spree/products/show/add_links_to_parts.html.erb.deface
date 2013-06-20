@@ -1,21 +1,42 @@
 <!-- insert_after '#cart-form' -->
-<% if @product.parts.any?(&:in_stock?) %>
-
+<% if @product.assembly? -%>
+  
   <h6>Parts included</h6>
 
-  <ul id="products" class="inline product-listing" data-hook>
-    <% @product.parts.each do |variant| %>
-      <% if variant.in_stock? %>
-        <li id="product_<%= variant.product.id %>" class="columns three <%= cycle("alpha", "secondary", "", "omega secondary") %>" data-hook="products_list_item" itemscope itemtype="http://schema.org/Product">
-          <div class="product-image">
-            <%= link_to small_image(variant.product, :itemprop => "name"), variant.product %>
-          </div>
-          <%= link_to truncate(variant.product.name, :length => 50), variant.product, :class => 'info', :itemprop => "name", :title => variant.product.name %>
-          <% if variant.product.individual_sale? %>
-            <span class="price selling" itemprop="price"><%= number_to_currency variant.price %></span>
+  <% @product.variants.each do |assembly_variant| -%>
+    <div id='<%= "assembly_parts_products_#{assembly_variant.product.id}_#{assembly_variant.id}" %>' style="display: none;" class="assembly_parts"> 
+
+      <ul id="products" class="inline product-listing" data-hook>
+        <% assembly_variant.parts.each do |variant| %>
+          <% if variant.in_stock? %>
+            <li id="product_<%= variant.product.id %>" class="columns three <%= cycle("alpha", "secondary", "", "omega secondary") %>" data-hook="products_list_item" itemscope itemtype="http://schema.org/Product">
+              <div class="product-image">
+                <%= link_to small_image(variant.product, :itemprop => "name"), variant.product %>
+              </div>
+              <%= link_to truncate(variant.product.name, :length => 50), variant.product, :class => 'info', :itemprop => "name", :title => variant.product.name %>
+            </li>
           <% end %>
-        </li>
-      <% end %>
-    <% end %>
-  </ul>
-<% end %>
+        <% end %>
+      </ul>
+      
+    </div>        
+  <% end %>
+  
+  <script>
+    $(function() {
+  
+      var variant_btn = $('.variants-buttons input[type="radio"]');
+    
+      $(variant_btn).click(function() {      
+        $('.assembly_parts').hide();    
+        var assembly_variant_radio_id = $(this).attr('id');
+        $('#assembly_parts_' + assembly_variant_radio_id).fadeIn();
+      });
+    
+      // trigger handler above on page load
+      $(variant_btn).attr('checked', 'checked').click();    
+  
+    });
+  </script>
+  
+<% end -%>
