@@ -1,5 +1,6 @@
 module Spree
   Shipment.class_eval do
+       
     # Overriden from Spree core as a product bundle part should not be put
     # together with an individual product purchased (even though they're the
     # very same variant) That is so we can tell the store admin which units
@@ -16,9 +17,10 @@ module Spree
           units.group_by(&:state).each { |state, iu| states[state] = iu.count }
           line_item ||= order.find_line_item_by_variant(variant)
 
-          part = line_item ? line_item.product.assembly? : false
+          part = line_item ? line_item.variant.assembly? : false
+                    
           items << OpenStruct.new(part: part,
-                                  product: line_item.try(:product),
+                                  product: line_item.try(:variant),
                                   line_item: line_item,
                                   variant: variant,
                                   quantity: units.length,
@@ -33,7 +35,7 @@ module Spree
     # 5 other parts. Frontend users should only see the product bundle as a
     # single item to ship
     def line_item_manifest
-      inventory_units.includes(:line_item, :variant).group_by(&:line_item).map do |line_item, units|
+      inventory_units.includes(:variant, :line_item).group_by(&:line_item).map do |line_item, units|
         states = {}
         units.group_by(&:state).each { |state, iu| states[state] = iu.count }
         OpenStruct.new(line_item: line_item, variant: line_item.variant, quantity: units.length, states: states)
