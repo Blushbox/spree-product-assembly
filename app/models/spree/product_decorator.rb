@@ -8,12 +8,10 @@ Spree::Product.class_eval do
 
   attr_accessible :can_be_part, :individual_sale
 
-  def all_assemblies_parts
-    variants.collect(&:parts).flatten
-  end
-  
+  # unlike the original gem whereas assemblies are simpler bundles, here assemblies can have variants, so assembly? truly belongs to a variant instead
+  # however, we can say a product is an assembly if at least one of its variants is an assembly
   def assembly?
-    all_assemblies_parts.present?
+    variants.detect(&:assembly?).present?
   end
     
 end
