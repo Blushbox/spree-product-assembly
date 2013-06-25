@@ -18,15 +18,9 @@ and contain two parts:
 If the t-shirt has three variants (small / medium / large), and the hat has no variants (ie one-size-fits-all), then Bundle 1 can be configured as follows:
 
 Bundle 1
-- Small (assembly variant)
--- T-shirt small variant (part variant)
--- Hat (no variant)
-- Medium (assembly variant)
--- T-shirt medium variant (part variant)
--- Hat (no variant)
-- Large (assembly variant)
--- T-shirt large variant (part variant)
--- Hat (no variant)
+- Small (assembly variant): contains T-shirt small variant (part variant) + Hat (no variant)
+- Medium (assembly variant): contains T-shirt medium variant (part variant) + Hat (no variant)
+- Large (assembly variant): contains T-shirt large variant (part variant) + Hat (no variant)
 
 Note: assemblies with no variants are also supported.
 
