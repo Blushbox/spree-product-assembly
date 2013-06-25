@@ -4,7 +4,7 @@ Create a product which is composed of other products.
 
 ## About this fork
 
-This fork introduces the notion of assembly variants. For example, an assembly name "Bundle 1" may have variants:
+This fork introduces the notion of assembly variants. For example, an assembly named "Bundle 1" may have variants:
 
 - small
 - medium
@@ -15,9 +15,8 @@ and contain two parts:
 - t-shirt
 - hat
 
-If the t-shirt has three variants (small / medium / large), and the hat has no variants (ie one-size-fits-all), then Bundle 1 can be configured as follows:
+If the t-shirt has three variants (small / medium / large), and the hat has no variants (ie one-size-fits-all), then "Bundle 1" can be configured as follows:
 
-Bundle 1
 - Small (assembly variant): contains T-shirt small variant (part variant) + Hat (no variant)
 - Medium (assembly variant): contains T-shirt medium variant (part variant) + Hat (no variant)
 - Large (assembly variant): contains T-shirt large variant (part variant) + Hat (no variant)
