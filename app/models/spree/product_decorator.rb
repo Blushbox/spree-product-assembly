@@ -1,11 +1,4 @@
 Spree::Product.class_eval do
-  has_and_belongs_to_many  :assemblies, :class_name => "Spree::Product",
-        :join_table => "spree_assemblies_parts",
-        :foreign_key => "part_id", :association_foreign_key => "assembly_id"
-
-  has_and_belongs_to_many  :parts, :class_name => "Spree::Variant",
-        :join_table => "spree_assemblies_parts",
-        :foreign_key => "assembly_id", :association_foreign_key => "part_id"
 
   scope :individual_saled, where(["spree_products.individual_sale = ?", true])
 
@@ -15,51 +8,18 @@ Spree::Product.class_eval do
 
   attr_accessible :can_be_part, :individual_sale
 
-  def add_part(variant, count = 1)
-    ap = Spree::AssembliesPart.get(self.id, variant.id)
-    if ap
-      ap.count += count
-      ap.save
-    else
-      self.parts << variant
-      set_part_count(variant, count) if count > 1
-    end
+  # exlusive or implementation of spree's variants_including_master scope:
+  # if product has non-master variants, return those.  Otherwise, return master as only available variant.
+  # note this does not return deleted variants (same as regular variants method)  
+  def variants_or_master
+    return variants if variants.any?
+    [master]
   end
-
-  def remove_part(variant)
-    ap = Spree::AssembliesPart.get(self.id, variant.id)
-    unless ap.nil?
-      ap.count -= 1
-      if ap.count > 0
-        ap.save
-      else
-        ap.destroy
-      end
-    end
-  end
-
-  def set_part_count(variant, count)
-    ap = Spree::AssembliesPart.get(self.id, variant.id)
-    unless ap.nil?
-      if count > 0
-        ap.count = count
-        ap.save
-      else
-        ap.destroy
-      end
-    end
-  end
-
+  
+  # unlike the original gem whereas assemblies are simpler bundles, here assemblies can have variants, so assembly? truly belongs to a variant instead
+  # however, we can say a product is an assembly if at least one of its variants is an assembly
   def assembly?
-    parts.present?
+    !variants_or_master.detect(&:assembly?).nil?
   end
-
-  def part?
-    assemblies.present?
-  end
-
-  def count_of(variant)
-    ap = Spree::AssembliesPart.get(self.id, variant.id)
-    ap ? ap.count : 0
-  end
+    
 end

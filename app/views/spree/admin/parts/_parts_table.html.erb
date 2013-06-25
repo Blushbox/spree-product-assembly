@@ -1,33 +1,39 @@
 <table class="index">
   <thead>
   	<tr>
-  	  <th><%= Spree.t(:sku) %></th>
   		<th><%= Spree.t(:name) %></th>
+  	  <th><%= Spree.t(:sku) %></th>
+  	  <th><%= Spree.t(:assembly_options) %></th>
   		<th><%= Spree.t(:options) %></th>
   		<th><%= Spree.t(:qty) %></th>
   		<th></th>
   	</tr>
   </thead>
   <tbody>
-    <% parts.each do |part| %>
-      <tr id="<%= dom_id(part, :sel)%>">
-        <td><%= part.sku %></td>
-        <td><%= part.product.name %></td>
-        <td><%= variant_options part %></td>
-        <td><%= text_field_tag :count, @product.count_of(part) %></td>
-  	    <td class="actions">
-          <%= image_tag "spinner.gif", :style => "display:none", :class => "spinner" %>
-          <%= link_to(icon('edit') + ' ' + Spree.t(:update),
-                      set_count_admin_product_part_url(@product, part),
-                      :class => "set_count_admin_product_part_link") %>
+    <% assemblies.each do |assembly| 
+				assembly.parts.each do |part|
+			-%>
+	      <tr id="<%= dom_id(part, :sel)%>">
+	        <td><%= part.product.name %></td>			
+	        <td><%= part.sku %></td>			
+	        <td><%= variant_options assembly %></td>		
+	        <td><%= variant_options part %></td>
+	        <td><%= text_field_tag :count, assembly.count_of(part) %></td>
+	  	    <td class="actions">
+	          <%= image_tag "spinner.gif", :style => "display:none", :class => "spinner" %>
+	          <%= link_to(icon('edit') + ' ' + Spree.t(:update),
+	                      set_count_admin_product_assembly_part_url(@product, assembly, part),
+	                      :class => "set_count_admin_product_part_link") %>
 
-          <%= link_to(icon('delete') + ' ' + Spree.t(:remove), 
-                      remove_admin_product_part_url(@product, part),
-                      :class => "remove_admin_product_part_link") %>             
-  	    </td>        
-      </tr>
-    <% end %>
-    <% if parts.empty? %>
+	          <%= link_to(icon('delete') + ' ' + Spree.t(:remove), 
+	                      remove_admin_product_assembly_part_url(@product, assembly, part),
+	                      :class => "remove_admin_product_part_link") %>             
+	  	    </td>        
+	      </tr>
+    <% 	end
+			end
+ 		-%>
+    <% if assemblies.empty? %>
      <tr><td colspan="5"><%= Spree.t(:none) %>.</td></tr>
     <% end %>
   </tbody>
