@@ -39,7 +39,7 @@ class Spree::Admin::PartsController < Spree::Admin::BaseController
   private
     def find_product_and_assemblies
       @product = Spree::Product.find_by_permalink(params[:product_id])
-      @assemblies = @product.variants
+      @assemblies = @product.variants_or_master
     end
     
     def find_part_and_assembly
