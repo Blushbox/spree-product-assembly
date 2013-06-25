@@ -1,8 +1,8 @@
 <!-- insert_bottom 'td[data-hook=order_item_description]' -->
-<% if item.product.assembly? %>
+<% if item.variant.assembly? %>
   <ul class='assembly_parts'>
-    <% item.product.parts.each do |v| %>
-    <li>(<%= item.product.count_of(v) %>)  <%= link_to v.name, product_path(v.product) %>  (<%= v.sku %>)</li>
+    <% item.variant.parts.each do |v| %>
+    <li>(<%= item.variant.count_of(v) %>)  <%= link_to v.name, product_path(v.product) %>  (<%= v.sku %>)</li>
     <% end %>
   </ul>
 <% end %>
