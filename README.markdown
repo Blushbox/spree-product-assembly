@@ -2,43 +2,32 @@
 
 Create a product which is composed of other products.
 
-## About this fork:
+## About this fork
 
-This fork introduces the notion of assembly variants, e.g.:
+This fork introduces the notion of assembly variants. For example, an assembly name "Bundle 1" may have variants:
 
-Bundle 1 (assembly) may have variants:
 - small
 - medium
 - large
 
-And contain two parts:
+and contain two parts:
+
 - t-shirt
 - hat
 
-Whereas the t-shirt product itself may have three variants (small / medium / large), and the hat may have no variants (ie one-size-fits-all).
-
-Then Bundle 1 can be configured as follows:
+If the t-shirt has three variants (small / medium / large), and the hat has no variants (ie one-size-fits-all), then Bundle 1 can be configured as follows:
 
 Bundle 1
- |
- +-- Small (assembly variant)
- |     |
- |     +-- T-shirt small variant (part variant)
- |     |
- |     +-- Hat (no variant)
- |
- +-- Medium (assembly variant)
- |     |
- |     +-- T-shirt medium variant (part variant)
- |     |
- |     +-- Hat (no variant)
- |
- +-- Large (assembly variant)
-       |
-       +-- T-shirt large variant (part variant)
-       |
-       +-- Hat (no variant)
- 
+- Small (assembly variant)
+-- T-shirt small variant (part variant)
+-- Hat (no variant)
+- Medium (assembly variant)
+-- T-shirt medium variant (part variant)
+-- Hat (no variant)
+- Large (assembly variant)
+-- T-shirt large variant (part variant)
+-- Hat (no variant)
+
 Note: assemblies with no variants are also supported.
 
 ## Todo
@@ -49,7 +38,8 @@ Currently, there is no rake task available to migrate an existing database from 
 
 ## Caveats
 
-Changing an assembly from having no variants to having variants (and vice-versa) once parts have already been associated might trigger a space-time discontinuity.
+- Changing an assembly from having no variants to having variants (and vice-versa) once parts have already been associated might trigger a space-time discontinuity.
+- If a part is to be associated to all variants, there is currently no shortcut to do so (ie you will have to manually associate the part to each variant).
 
 ## Installation
 
