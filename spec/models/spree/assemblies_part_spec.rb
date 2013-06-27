@@ -2,16 +2,16 @@ require 'spec_helper'
 
 module Spree
   describe AssembliesPart do
-    let(:product) { create(:product) }
-    let(:variant) { create(:variant) }
+    let(:assembly_variant) { create(:variant) }
+    let(:part_variant) { create(:variant) }
 
     before do
-      product.parts.push variant
+      assembly_variant.parts.push part_variant
     end
 
     context "get" do
-      it "brings part by product and variant id" do
-        subject.class.get(product.id, variant.id).part.should == variant
+      it "brings part by assembly variant id and part variant id" do
+        subject.class.get(assembly_variant.id, part_variant.id).part.should == part_variant
       end
     end
   end

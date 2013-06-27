@@ -41,22 +41,4 @@ describe Spree::Product do
     end
   end
 
-  describe "Spree::Product Assembly" do
-    before(:each) do
-      @product = create(:product)
-      @part1 = create(:product, :can_be_part => true)
-      @part2 = create(:product, :can_be_part => true)
-      @product.add_part @part1.master, 1
-      @product.add_part @part2.master, 4
-    end
-    
-    it "is an assembly" do
-      @product.should be_assembly
-    end
-    
-    it 'changing part qty changes count on_hand' do
-      @product.set_part_count(@part2, 2)
-      @product.count_of(@part2).should == 2
-    end
-  end
 end

@@ -10,6 +10,6 @@ shared_context "product is ordered as individual and within a bundle" do
   before do
     expect(bundle_variant).to_not eql common_product
 
-    bundle.parts << [parts, common_product]
+    bundle.master.parts << [parts, common_product]
   end
 end
