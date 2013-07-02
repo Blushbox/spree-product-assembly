@@ -8,7 +8,7 @@ module Spree
     let(:inventory) { double('inventory') }
 
     context "updates bundle  line item" do
-      let(:parts) { (1..6).map { create(:variant) } }
+      let(:parts) { (1..2).map { create(:variant) } }
 
       before do
         bundle_variant.parts << parts
