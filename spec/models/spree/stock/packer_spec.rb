@@ -21,7 +21,7 @@ module Spree
         let(:parts) { (1..3).map { create(:variant) } }
 
         before do
-          order.products.last.parts << parts
+          order.products.last.master.parts << parts
         end
 
         it 'adds all bundle parts to the shipent' do

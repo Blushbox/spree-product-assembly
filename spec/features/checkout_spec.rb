@@ -13,7 +13,7 @@ describe "Checkout" do
 
   stub_authorization!
 
-  before { product.parts.push variant }
+  before { product.master.parts.push variant }
 
   shared_context "purchases product with part included" do
     before do
@@ -24,6 +24,7 @@ describe "Checkout" do
       fill_in_address
 
       click_button "Save and Continue"
+            
       expect(current_path).to eql(spree.checkout_state_path("delivery"))
       page.should have_content(variant.product.name)
 
