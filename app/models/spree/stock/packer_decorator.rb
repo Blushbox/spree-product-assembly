@@ -22,6 +22,7 @@ module Spree
 
           variant = line_item.variant
           if variant.assembly?
+                        
             variant.parts.each do |part|
               next unless stock_location.stock_item(part)
 
