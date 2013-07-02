@@ -18,7 +18,7 @@ module Spree
     end
 
     private
-      def update_inventory
+      def update_inventory        
         if self.variant.assembly? && order.completed?
           OrderInventoryAssembly.new(self).verify(target_shipment)
         else

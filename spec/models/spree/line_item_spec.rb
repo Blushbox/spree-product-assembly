@@ -4,14 +4,15 @@ module Spree
   describe LineItem do
     let!(:order) { create(:order_with_line_items) }
     let(:line_item) { order.line_items.first }
-    let(:product) { line_item.product }
+    let(:bundle_variant) { line_item.variant }
     let(:inventory) { double('inventory') }
 
-    context "updates bundle product line item" do
-      let(:parts) { (1..2).map { create(:variant) } }
+    context "updates bundle  line item" do
+      let(:parts) { (1..6).map { create(:variant) } }
 
       before do
-        product.master.parts << parts
+        bundle_variant.parts << parts
+        
         order.create_proposed_shipments
         order.finalize!
       end
