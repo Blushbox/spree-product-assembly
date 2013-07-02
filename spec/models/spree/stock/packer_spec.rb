@@ -18,13 +18,13 @@ module Spree
       end
 
       context 'build bundle product package' do
-        let(:parts) { (1..3).map { create(:variant) } }
+        let(:parts) { (1..9).map { create(:variant) } }
 
         before do
-          order.products.last.master.parts << parts
+          order.line_items.last.variant.parts << parts
         end
 
-        it 'adds all bundle parts to the shipent' do
+        it 'adds all bundle parts to the shipment' do
           package = subject.product_assembly_package
           package.contents.size.should eq 4 + parts.count
         end
