@@ -10,7 +10,7 @@ module Spree
       let(:shipments) { order.create_proposed_shipments }
 
       context "default" do
-        let(:expected_variants) { order.variants - [bundle_variant] + bundle.master.parts }
+        let(:expected_variants) { order.variants - [bundle_variant] + bundle_variant.parts }
 
         it "separates variant purchased individually from the bundle one" do
           expect(shipments.count).to eql 1
