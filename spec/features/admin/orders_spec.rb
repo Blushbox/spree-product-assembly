@@ -5,7 +5,7 @@ describe "Orders" do
 
   let(:order) { create(:order_with_line_items) }
   let(:line_item) { order.line_items.first }
-  let(:bundle) { line_item.product }
+  let(:bundle) { line_item.variant }
   let(:parts) { (1..3).map { create(:variant) } }
 
   before do

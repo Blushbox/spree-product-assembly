@@ -1,5 +1,8 @@
 Spree::Variant.class_eval do
     
+  has_many :assemblies_parts_from_assembly, :class_name => "Spree::AssembliesPart",
+    :foreign_key => "assembly_id"
+    
   has_and_belongs_to_many  :assemblies, :class_name => "Spree::Variant",
         :join_table => "spree_assemblies_parts",
         :foreign_key => "part_id", :association_foreign_key => "assembly_id"

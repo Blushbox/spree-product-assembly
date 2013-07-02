@@ -8,21 +8,21 @@ module Spree
   # that class and only override what's needed for the specs of this extension
   # e.g. `verify`, `inventory_units` and `remove`
   class OrderInventoryAssembly
-    attr_reader :order, :line_item, :product
+    attr_reader :order, :line_item, :variant
 
     def initialize(line_item)
       @order = line_item.order
       @line_item = line_item
-      @product = line_item.product
+      @variant = line_item.variant
     end
 
     def verify(shipment = nil)
-      parts_total = product.assemblies_parts.sum(&:count)
+      parts_total = variant.assemblies_parts_from_assembly.sum(&:count)
 
       if inventory_units.size < (parts_total * line_item.quantity)
 
-        product.parts.each do |part|
-          quantity = (product.count_of(part) * (line_item.quantity - line_item.changed_attributes['quantity']))
+        variant.parts.each do |part|
+          quantity = (variant.count_of(part) * (line_item.quantity - line_item.changed_attributes['quantity']))
 
           shipment = determine_target_shipment(part) unless shipment
           add_to_shipment(shipment, part, quantity)
@@ -39,8 +39,8 @@ module Spree
 
     private
       def remove(shipment = nil)
-        product.parts.each do |part|
-          quantity = (product.count_of(part) * (line_item.changed_attributes['quantity'] - line_item.quantity))
+        variant.parts.each do |part|
+          quantity = (variant.count_of(part) * (line_item.changed_attributes['quantity'] - line_item.quantity))
 
           if shipment.present?
             remove_from_shipment(shipment, part, quantity)
