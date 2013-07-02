@@ -17,7 +17,6 @@ module Spree
 
           it "calculates items quantity properly" do
             expected_units_on_package = order.line_items.sum(&:quantity) - bundle_item_quantity + (bundle.master.parts.count * bundle_item_quantity)
-
             expect(subject.packages.sum(&:quantity)).to eql expected_units_on_package
           end
         end
