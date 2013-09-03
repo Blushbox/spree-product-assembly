@@ -10,12 +10,26 @@
         <ul id="products" class="inline product-listing" data-hook>
           <% assembly_variant.parts.each do |variant| %>
             <% if variant.in_stock? %>
-              <li id="product_<%= variant.product.id %>" class="columns three <%= cycle("alpha", "secondary", "omega secondary") %>" data-hook="products_list_item" itemscope itemtype="http://schema.org/Product">
-                <div class="product-image">
-                  <%= link_to small_image(variant.product, :itemprop => "name"), variant.product %>
-                </div><!-- /.product-image -->
-                <%= link_to truncate(variant.product.name, :length => 50), variant.product, :class => 'info', :itemprop => "name", :title => variant.product.name %>
+              <li id="product_<%= variant.product.id %>" class="columns three <%= cycle("alpha", "secondary", "omega secondary", :name => "column-cycle") %>" data-hook="products_list_item" itemscope itemtype="http://schema.org/Product">
+
+                <% if variant.product.individual_sale? %>
+
+                  <div class="product-image">
+                    <%= link_to small_image(variant.product, :itemprop => "name"), variant.product %>
+                  </div><!-- /.product-image -->                
+                  <%= link_to truncate(variant.product.name, :length => 50), variant.product, :class => 'info', :itemprop => "name", :title => variant.product.name %>
+
+                <% else -%>
+
+                  <div class="product-image">
+                    <%= small_image(variant.product, :itemprop => "name") %>
+                  </div><!-- /.product-image -->                
+                  <%= truncate(variant.product.name, :length => 50) %>
+
+                <% end -%>
+
               </li>
+              <% reset_cycle("column-cycle") %>
             <% end %>
           <% end %>
         </ul><!-- /#products -->
