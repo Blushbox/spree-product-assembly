@@ -2,7 +2,7 @@
 <% if item.variant.assembly? %>
   <ul class='assembly_parts'>
     <% item.variant.parts.each do |v| %>
-    <li>(<%= item.variant.count_of(v) %>)  <%= link_to v.name, product_path(v.product) %>  (<%= v.sku %>)</li>
+  	<li><%= "(#{item.variant.count_of(v)}) #{v.name}" %></li>    
     <% end %>
   </ul>
 <% end %>
