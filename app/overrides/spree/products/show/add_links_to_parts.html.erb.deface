@@ -26,12 +26,14 @@
                   </div><!-- /.product-image -->                
                   <%= truncate(variant.product.name, :length => 50) %>
 
-                <% end -%>
+                <% end -%><!-- /individual sale -->
 
               </li>
-              <% reset_cycle("column-cycle") %>
-            <% end %>
-          <% end %>
+            <% end %><!-- /variant.parts -->
+
+          <% end %><!-- /product.variants -->
+    
+          <% reset_cycle("column-cycle") %>
         </ul><!-- /#products -->
       </div><!-- /.assembly-parts -->
 <% end %>
