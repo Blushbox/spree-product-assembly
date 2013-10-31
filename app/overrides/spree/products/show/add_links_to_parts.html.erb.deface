@@ -5,7 +5,7 @@
   <h6 class="product-section-title">Parts Included</h6>
 
   <% @product.variants_or_master.each do |assembly_variant| -%>
-    <div id='<%= "assembly_parts_products_#{assembly_variant.product.id}_#{assembly_variant.id}" %>' <%= @product.has_variants? ? 'style="display: none;"' : '' %> class="assembly_parts"> 
+    <div id='<%= "parts_for_#{assembly_variant.id}" %>' <%= @product.has_variants? ? 'style="display: none;"' : '' %> class="assembly_parts"> 
 
         <ul id="products" class="inline product-listing" data-hook>
           <% assembly_variant.parts.each do |variant| %>
@@ -39,19 +39,12 @@
   <% if @product.has_variants? -%>
   
     <script>
-      $(function() {
-      
-        var variant_btn = $('.variants-buttons input[type="radio"]');
-    
-        $(variant_btn).click(function() {      
+      $(function() {      
+        $('.variants-buttons').on('variant-updated', function() {
           $('.assembly_parts').hide();    
-          var assembly_variant_radio_id = $(this).attr('id');
-          $('#assembly_parts_' + assembly_variant_radio_id).fadeIn();
+          var variantId = $('#variant-id').val();
+          $('#parts_for_' + variantId).fadeIn();
         });
-    
-        // trigger handler above on page load
-        $(variant_btn).attr('checked', 'checked').click();    
-  
       });
     </script>
     
