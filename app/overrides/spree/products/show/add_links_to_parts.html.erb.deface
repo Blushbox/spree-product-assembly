@@ -5,7 +5,7 @@
   <h6 class="product-section-title">Parts Included</h6>
 
   <% @product.variants_or_master.each do |assembly_variant| -%>
-    <div id='<%= "parts_for_#{assembly_variant.id}" %>' <%= @product.has_variants? ? 'style="display: none;"' : '' %> class="assembly_parts"> 
+    <div id='<%= "parts_for_#{assembly_variant.id}" %>' <%= raw(@product.has_variants? ? 'style="display: none;"' : '') %> class="assembly_parts"> 
 
         <ul id="products" class="inline product-listing" data-hook>
           <% assembly_variant.parts.each do |variant| %>
@@ -39,17 +39,19 @@
 <% end %>
   
   <% if @product.has_variants? -%>
-  
-    <script>
-      $(function() {      
-        $('.variants-buttons').on('variant-updated', function() {
-          $('.assembly_parts').hide();    
-          var variantId = $('#variant-id').val();
-          $('#parts_for_' + variantId).fadeIn();
-        });
-      });
-    </script>
-    
+
+    <% content_for :head do %>  
+        <script>
+          $(function() {      
+            $('.variants-buttons').on('variant-updated', function() {
+              $('.assembly_parts').hide();    
+              var variantId = $('#variant-id').val();
+              $('#parts_for_' + variantId).fadeIn();
+            });
+          });
+        </script>
+    <% end %>
+
   <% end -%>
   
     </div><!-- /.product-assembly -->           
