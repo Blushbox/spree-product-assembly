@@ -16,17 +16,29 @@
 
                   <div class="product-image">
                     <%= link_to small_image(variant.product, :itemprop => "name"), variant.product %>
-                  </div><!-- /.product-image -->                
-                  <%= link_to truncate(variant.product.name, :length => 50), variant.product, :class => 'info', :itemprop => "name", :title => variant.product.name %>
+                  </div><!-- /.product-image -->
+
+                  <div class="product-name">                             
+                    <%= link_to truncate(variant.product.name, :length => 50), variant.product, :class => 'info', :itemprop => "name", :title => variant.product.name %>
+                  </div><!-- /.product-name -->
 
                 <% else -%>
 
                   <div class="product-image">
                     <%= small_image(variant.product, :itemprop => "name") %>
-                  </div><!-- /.product-image -->                
-                  <%= truncate(variant.product.name, :length => 50) %>
+                  </div><!-- /.product-image -->
+
+                  <div class="product-name">                
+                    <%= truncate(variant.product.name, :length => 40) %>
+                  </div><!-- /.product-name -->
 
                 <% end -%><!-- /individual sale -->
+
+                  <% brand_property = variant.product.product_properties.detect{|p| p.property.name == 'brand'} -%>
+                  <div class="product-brand">
+                    <%= brand_property.try(:property_name) %>
+                    <%= truncate(brand_property.try(:value), :length => 40) %>                    
+                  </div><!-- /.product-brand -->
 
               </li>
             <% end %><!-- /variant.parts -->
