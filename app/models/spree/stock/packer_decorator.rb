@@ -4,11 +4,15 @@ module Spree
       # Overriden from Spree core to build a custom package instead of the
       # default_package built in Spree
       def packages
-        if splitters.empty?
-          [product_assembly_package]
-        else
-          build_splitter.split [product_assembly_package]
-        end        
+        # original logic below enables for config but does not work on app
+        # if splitters.empty?
+        #   [product_assembly_package]
+        # else
+        #   build_splitter.split [product_assembly_package]
+        # end        
+
+        # so instead hard code it to no splitting:
+        [product_assembly_package]
       end
 
       # Returns a package with all products from current stock location
