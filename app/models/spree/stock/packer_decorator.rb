@@ -4,15 +4,15 @@ module Spree
       # Overriden from Spree core to build a custom package instead of the
       # default_package built in Spree
       def packages
-        # original logic below enables for config but does not work on app
-        # if splitters.empty?
-        #   [product_assembly_package]
-        # else
-        #   build_splitter.split [product_assembly_package]
-        # end        
+        # original logic except we call product_assembly_package
+        if splitters.empty?
+          [product_assembly_package]
+        else
+          build_splitter.split [product_assembly_package]
+        end        
 
-        # so instead hard code it to no splitting:
-        [product_assembly_package]
+        # this forces no splitting at all:
+        #[product_assembly_package]
       end
 
       # Returns a package with all products from current stock location
@@ -30,25 +30,40 @@ module Spree
 
           variant = line_item.variant
           if variant.assembly?
-                        
+               
+            # original logic applied to each assembly part         
+            
             variant.parts.each do |part|
-              next unless stock_location.stock_item(part)
+              if line_item.should_track_inventory?
+                next unless stock_location.stock_item(part)
 
-              on_hand, backordered = stock_location.fill_status(part, line_item.quantity * variant.count_of(part))
-
-              package.add part, on_hand, :on_hand, line_item if on_hand > 0
-              package.add part, backordered, :backordered, line_item if backordered > 0
+                on_hand, backordered = stock_location.fill_status(part, line_item.quantity * variant.count_of(part))
+                package.add part, on_hand, :on_hand, line_item if on_hand > 0
+                package.add part, backordered, :backordered, line_item if backordered > 0
+              else
+                package.add part, line_item.quantity, :on_hand, line_item
+              end
             end
-          else
-            next unless stock_location.stock_item(variant)
 
-            on_hand, backordered = stock_location.fill_status(variant, line_item.quantity)
-            package.add variant, on_hand, :on_hand, line_item if on_hand > 0
-            package.add variant, backordered, :backordered, line_item if backordered > 0
+          else
+
+            # original logic
+
+            if line_item.should_track_inventory?
+              next unless stock_location.stock_item(variant)
+
+              on_hand, backordered = stock_location.fill_status(variant, line_item.quantity)
+              package.add variant, on_hand, :on_hand, line_item if on_hand > 0
+              package.add variant, backordered, :backordered, line_item if backordered > 0
+            else
+              package.add variant, line_item.quantity, :on_hand, line_item
+            end
+
           end
         end
         package
       end
+
     end
   end
 end
