@@ -37,9 +37,11 @@ module Spree
               if line_item.should_track_inventory?
                 next unless stock_location.stock_item(part)
 
-                on_hand, backordered = stock_location.fill_status(part, line_item.quantity * variant.count_of(part))
-                package.add part, on_hand, :on_hand, line_item if on_hand > 0
-                package.add part, backordered, :backordered, line_item if backordered > 0
+                # do not split on backorder items, pretend they are always on hand
+                # on_hand, backordered = stock_location.fill_status(part, line_item.quantity * variant.count_of(part))
+                # package.add part, on_hand, :on_hand, line_item if on_hand > 0
+                # package.add part, backordered, :backordered, line_item if backordered > 0
+                package.add part, line_item.quantity, :on_hand, line_item                
               else
                 package.add part, line_item.quantity, :on_hand, line_item
               end
@@ -52,9 +54,11 @@ module Spree
             if line_item.should_track_inventory?
               next unless stock_location.stock_item(variant)
 
-              on_hand, backordered = stock_location.fill_status(variant, line_item.quantity)
-              package.add variant, on_hand, :on_hand, line_item if on_hand > 0
-              package.add variant, backordered, :backordered, line_item if backordered > 0
+              # do not split on backorder items, pretend they are always on hand
+              # on_hand, backordered = stock_location.fill_status(variant, line_item.quantity)
+              # package.add variant, on_hand, :on_hand, line_item if on_hand > 0
+              # package.add variant, backordered, :backordered, line_item if backordered > 0
+              package.add variant, line_item.quantity, :on_hand, line_item              
             else
               package.add variant, line_item.quantity, :on_hand, line_item
             end
