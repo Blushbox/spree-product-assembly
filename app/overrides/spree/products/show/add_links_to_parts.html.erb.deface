@@ -36,7 +36,7 @@
 
                   <% brand_property = variant.product.product_properties.detect{|p| p.property.name == 'by'} -%>
                   <div class="product-brand">
-                    <%= brand_property.try(:property_name) %>
+                    <%= brand_property.try(:property_name) %>&nbsp;
                     <%= truncate(brand_property.try(:value), :length => 40) %>                    
                   </div><!-- /.product-brand -->
 
